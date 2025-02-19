@@ -1,0 +1,80 @@
+@model IEnumerable<ProjectCar.Models.Insuree>
+
+@{
+    ViewData["Title"] = "Insurance Quotes";
+}
+
+<h1>Insurance Quotes</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Get New Quote</a>
+</p>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Quote ID</th>
+                <th>Name</th>
+                <th>Monthly Quote</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.FirstName @item.LastName</td>
+                    <td>$@item.Quote.ToString("F2")</td>
+                    <td>
+                        <button class="btn btn-info" type="button" data-toggle="collapse" 
+                                data-target="#quote-@item.Id" aria-expanded="false" 
+                                aria-controls="quote-@item.Id">
+                            Show Details
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="p-0">
+                        <div class="collapse" id="quote-@item.Id">
+                            <div class="card card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>Email:</strong> @item.EmailAddress</p>
+                                        <p><strong>Date of Birth:</strong> @item.DateOfBirth.ToShortDateString()</p>
+                                        <p><strong>Car Information:</strong> @item.CarYear @item.CarMake @item.CarModel</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Speeding Tickets:</strong> @item.SpeedingTickets</p>
+                                        <p><strong>DUI History:</strong> @(item.HasDUI ? "Yes" : "No")</p>
+                                        <p><strong>Coverage Type:</strong> @(item.IsFullCoverage ? "Full Coverage" : "Basic Coverage")</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">
+        No quotes have been generated yet. Click "Get New Quote" to start.
+    </div>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="collapse"]').click(function () {
+                $(this).text(function(i, text){
+                    return text === "Show Details" ? "Hide Details" : "Show Details";
+                });
+            });
+        });
+    </script>
+} 

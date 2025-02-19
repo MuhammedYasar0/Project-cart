@@ -1,0 +1,70 @@
+@model IEnumerable<ProjectCar.Models.Insuree>
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h1>Insurance Quotes Admin Dashboard</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.FirstName)</th>
+            <th>@Html.DisplayNameFor(model => model.LastName)</th>
+            <th>@Html.DisplayNameFor(model => model.EmailAddress)</th>
+            <th>@Html.DisplayNameFor(model => model.Quote)</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                <td>@Html.DisplayFor(modelItem => item.EmailAddress)</td>
+                <td>$@Html.DisplayFor(modelItem => item.Quote)</td>
+                <td>
+                    <button class="btn btn-info" type="button" data-toggle="collapse" 
+                            data-target="#details-@item.Id" aria-expanded="false" 
+                            aria-controls="details-@item.Id">
+                        Show Details
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" class="p-0">
+                    <div class="collapse" id="details-@item.Id">
+                        <div class="card card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Date of Birth:</strong> @item.DateOfBirth.ToShortDateString()</p>
+                                    <p><strong>Car Year:</strong> @item.CarYear</p>
+                                    <p><strong>Car Make:</strong> @item.CarMake</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Car Model:</strong> @item.CarModel</p>
+                                    <p><strong>Speeding Tickets:</strong> @item.SpeedingTickets</p>
+                                    <p><strong>DUI:</strong> @(item.HasDUI ? "Yes" : "No")</p>
+                                    <p><strong>Full Coverage:</strong> @(item.IsFullCoverage ? "Yes" : "No")</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="collapse"]').click(function () {
+                $(this).text(function(i, text){
+                    return text === "Show Details" ? "Hide Details" : "Show Details";
+                });
+            });
+        });
+    </script>
+} 
